@@ -129,8 +129,8 @@ user2.save();
 user3.save();
 user4.save();
 }
- seedBookCollection();
- seedUserCollection();
+// seedBookCollection();
+// seedUserCollection();
 
 function getBooks(req,res){
     let search_q = req.query.email;
