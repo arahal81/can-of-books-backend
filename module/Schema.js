@@ -1,8 +1,10 @@
 
 'use strict'
 const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser:true, useUnifiedTopology: true })
 
-mongoose.connect('mongodb://localhost:27017/FavoriteBooks', {useNewUrlParser: true, useUnifiedTopology: true});
+
+//mongoose.connect('mongodb://localhost:27017/FavoriteBooks', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const BookSchema = new mongoose.Schema({
     name: String,
@@ -130,8 +132,8 @@ user3.save();
 user4.save();
 }
 
- seedBookCollection();
- seedUserCollection();
+ //seedBookCollection();
+// seedUserCollection();
 
 function getBooks(req,res){
     let search_q = req.query.email;
