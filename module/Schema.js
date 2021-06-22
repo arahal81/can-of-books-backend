@@ -1,5 +1,6 @@
 
 'use strict'
+const myFunctions = {};
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser:true, useUnifiedTopology: true })
 
@@ -135,7 +136,7 @@ user4.save();
 //  seedBookCollection();
 // seedUserCollection();
 
-function getBooks(req,res){
+myFunctions.getBooks=function(req,res){
     let search_q = req.query.email;
     //let arrBooks=
     user.find({email:search_q},(err,booklist)=>{
@@ -143,12 +144,10 @@ function getBooks(req,res){
          res.send(err)
         }
         res.send(booklist[0].book);
-
-
     })
     
 }
-function addBook(req,res){
+myFunctions.addBook=function(req,res){
     const{email,name,description,status}=req.body;
     user.find({email:email},(error,userData)=>{
         if(error){
@@ -165,10 +164,10 @@ function addBook(req,res){
 }
 
 
-function deleteBook(req,res){
+myFunctions.deleteBook=function(req,res){
     const {email}=req.query;
-    const id=req.params.id;
-    user.find({email:email},(error,userData)=>{
+    const id=Number(req.params.id);
+    user.find({email},(error,userData)=>{
         if(error){
             res.send('some thing went wrong');
         }
@@ -182,7 +181,7 @@ function deleteBook(req,res){
         res.send(userData[0].book);
     })
 }
-const myFunctions={addBook,getBooks,deleteBook};
 
-module.export=myFunctions;
+
+module.exports=myFunctions;
 
