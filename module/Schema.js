@@ -9,7 +9,7 @@ mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser:true, useUnifiedTopol
 const BookSchema = new mongoose.Schema({
     name: String,
     description: String,
-    img: String
+    status: String
 });
 
 const UserSchema = new mongoose.Schema({
@@ -132,8 +132,8 @@ user3.save();
 user4.save();
 }
 
- seedBookCollection();
-seedUserCollection();
+//  seedBookCollection();
+// seedUserCollection();
 
 function getBooks(req,res){
     let search_q = req.query.email;
@@ -146,16 +146,43 @@ function getBooks(req,res){
 
 
     })
-    /* user.find({email:search_q},function(err,ownerData){
-        if(err){
-            console.log('something went wrong');
+    
+}
+function addBook(req,res){
+    const{email,name,description,status}=req.body;
+    user.find({email:email},(error,userData)=>{
+        if(error){
+            res.send('something went wrong')
         }
-        else
-        {
-            // console.log(ownerData[0].cats);
-            res.send(ownerData[0].cats);
-        }
-    })*/
+        userData[0].book.push({
+            name:name,
+            description:description,
+            status:status
+        })
+        userData[0].save();
+        res.send(userData[0].book)
+    })
 }
 
-module.exports = getBooks;
+
+function deleteBook(req,res){
+    const {email}=req.query;
+    const id=req.params.id;
+    user.find({email:email},(error,userData)=>{
+        if(error){
+            res.send('some thing went wrong');
+        }
+        const bookArr=userData[0].book.filter((item,i)=>{
+            if(i!==id){
+                return item;
+            }
+        })
+        userData[0].book=bookArr;
+        userData[0].save();
+        res.send(userData[0].book);
+    })
+}
+const myFunctions={addBook,getBooks,deleteBook};
+
+module.export=myFunctions;
+
