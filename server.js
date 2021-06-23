@@ -14,6 +14,7 @@ app.get('/', function (req, res) {
 app.get('/book',myFunctions.getBooks);
 app.post('/books',myFunctions.addBook);
 app.delete('/books/:id',myFunctions.deleteBook);
+app.put('/books/:id',myFunctions.updateBook);
 
 
 

@@ -181,6 +181,22 @@ myFunctions.deleteBook=function(req,res){
         res.send(userData[0].book);
     })
 }
+myFunctions.updateBook=function(req,res){
+    const{email,name,description,status}=req.body;
+    const id=Number(req.params.id);
+    user.findOne({email:email},(error,userData)=>{
+        if(error){
+            res.send('some thing went wrong');
+        }
+        userData.book.splice(id,1,{
+            name:name,
+            description:description,
+            status:status
+        })
+        userData.save();
+        res.send(userData.book);
+    })
+}
 
 
 module.exports=myFunctions;
